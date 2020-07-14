@@ -22,48 +22,53 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoggerController {
     // 初始化 Logger 对象
     private final Logger logger = LoggerFactory.getLogger(LoggerController.class);
-
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate kafka;
 
     @PostMapping("/log")
     public String doLog(@RequestParam("log")String log){
-
-        //创建JSON对象
-        JSONObject logObj = JSON.parseObject(log);
         // 1. 给日志添加一个时间戳
-        logObj = addTS(logObj);
+        log = addTS(log);
         // 2. 数据落盘(为离线数据做准备)
         // 日志落盘
-        saveLog(logObj);
+        saveToDisk(log);
         // 3. 把数据写入到kafka，需要写入到topic
-        //根据数据中的"type"字段选择发送至不同的主题
-        if ("startup".equals(logObj.getString("type"))) {
-            kafkaTemplate.send(GmallConstant.GMALL_STARTUP, logObj.toString());
-        } else {
-            kafkaTemplate.send(GmallConstant.GMALL_EVENT, logObj.toString());
-        }
+        sendToKafka(log);
+        System.out.println(log);
         return "success";
-
     }
 
     /**
      * 添加时间戳
-     * @param logObj
+     * @param log
      * @return
      */
-    public JSONObject addTS(JSONObject logObj){
-        logObj.put("ts", System.currentTimeMillis());
-        return logObj;
+    public String addTS(String log){
+        JSONObject obj = JSON.parseObject(log);
+        obj.put("ts",System.currentTimeMillis());
+        return JSON.toJSONString(obj);
     }
+
     /**
-     * 日志落盘
+     * 将日志写入到磁盘
      * 使用 log4j
-     * @param logObj
+     * @param log
      */
-    public void saveLog(JSONObject logObj) {
-        logger.info(logObj.toJSONString());
+    public void saveToDisk(String log) {
+        logger.info(log);
     }
 
+    /**
+     *  把日志发送到kafka
+     *  不同的日志写入到不同的topic
+     * @param log
+     */
+    private void sendToKafka(String log) {
+        if (log.contains("\"startup\"")) {
+            kafka.send(GmallConstant.STARTUP_TOPIC, log);
+        } else {
+            kafka.send(GmallConstant.EVENT_TOPIC, log);
+        }
 
+    }
 }

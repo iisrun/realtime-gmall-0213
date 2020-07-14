@@ -9,9 +9,9 @@ package com.iisrun.constants;
  */
 public class GmallConstant {
     //启动日志主题
-    public static final String GMALL_STARTUP = "gmall_startup";
+    public static final String STARTUP_TOPIC = "startup_topic";
 
     //事件日志主题
-    public static final String GMALL_EVENT = "gmall_event";
+    public static final String EVENT_TOPIC = "event_topic";
 
 }
