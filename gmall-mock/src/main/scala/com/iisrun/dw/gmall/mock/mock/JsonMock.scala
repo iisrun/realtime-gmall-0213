@@ -125,14 +125,14 @@ object JsonMock {
       // 生成一条启动日志
       val oneStartupLog: String = initOneStartupLog()
       // 发送启动日志
-//      println(oneStartupLog)
+      println(oneStartupLog)
       LogUploader.sendLog(oneStartupLog)
       // 模拟出来多条事件日志
       while (!quitOpts.getRandomOption()) {
         // 生成一条事件日志
         val oneEventLog: String = initOneEventLog(oneStartupLog)
         // 发送事件日志
-//        println(oneEventLog)
+        println(oneEventLog)
         LogUploader.sendLog(oneEventLog)
         Thread.sleep(100)
       }

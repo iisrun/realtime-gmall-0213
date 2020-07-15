@@ -17,10 +17,10 @@ import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
 object MyKafkaUtils {
 
   val kafkaParams = Map[String, Object](
-    "bootstrap.servers" -> "hadoop61:9092,hadoop62:9092,hadoop63:9092",
+    "bootstrap.servers" -> ConfigUtils.getProperty("kafka.servers"),
     "key.deserializer" -> classOf[StringDeserializer],
     "value.deserializer" -> classOf[StringDeserializer],
-    "group.id" -> "bigdata",
+    "group.id" -> ConfigUtils.getProperty("kafka.group.id"),
     "auto.offset.reset" -> "latest",
     "enable.auto.commit" -> (true: java.lang.Boolean)
   )
