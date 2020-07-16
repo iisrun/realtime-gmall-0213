@@ -1,8 +1,5 @@
 package com.iisrun.service;
 
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,7 +9,6 @@ import java.util.Map;
  * @Date: 2020/07/15 14:52
  * @Description:
  */
-@Service
 public interface PublisherService {
 
     /**

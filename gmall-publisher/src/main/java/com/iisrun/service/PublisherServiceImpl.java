@@ -17,22 +17,24 @@ import java.util.Map;
  */
 @Service
 public class PublisherServiceImpl implements PublisherService{
+
     @Autowired
-    DauMapper dauDao;
+    private DauMapper dau;
+
     @Override
     public Long getDau(String date) {
-        return dauDao.getDau(date);
+        return dau.getDau(date);
     }
 
     @Override
     public Map<String,Long> getHourDau(String date) {
-        List<Map<String, Object>> hourDau = dauDao.getHourDau(date);
+        List<Map<String, Object>> hourDau = dau.getHourDau(date);
         HashMap<String, Long> result = new HashMap<>();
         for (Map<String, Object> map : hourDau) {
             String key = map.get("LOGHOUR").toString();
             Long value = (Long) map.get("COUNT");
             result.put(key,value);
         }
-        return null;
+        return result;
     }
 }

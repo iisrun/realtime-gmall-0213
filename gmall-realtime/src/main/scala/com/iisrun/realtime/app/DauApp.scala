@@ -19,7 +19,7 @@ import redis.clients.jedis.Jedis
  *
  * @Author: drz
  * @Date: 2020/07/14 16:38
- * @Description:
+ * @Description: 使用SparkStreaming实时从kafka消费数据并进行过滤
  */
 object DauApp {
   def main(args: Array[String]): Unit = {

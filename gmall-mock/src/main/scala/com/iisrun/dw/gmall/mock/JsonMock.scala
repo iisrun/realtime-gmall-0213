@@ -1,4 +1,4 @@
-package com.iisrun.dw.gmall.mock.mock
+package com.iisrun.dw.gmall.mock
 
 import java.util.Date
 

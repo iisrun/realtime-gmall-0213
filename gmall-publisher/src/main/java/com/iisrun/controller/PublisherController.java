@@ -26,15 +26,22 @@ public class PublisherController {
     @Autowired
     PublisherService service;
 
+    /**
+     * 当日日活
+     * @param date
+     * @return
+     */
     @GetMapping("/realtime-total")
     public String realtimeTotal(@RequestParam("date") String date) {
+        Long dau = service.getDau(date);
 
-        List<Map<String, String>> result = new ArrayList<Map<String, String>>();
+        // Json字符串先用java的数据结构表示，然后用json序列号工具直接转成json字符串
+        List<Map<String, String>> result = new ArrayList<>();
 
         Map<String, String> map1 = new HashMap<>();
         map1.put("id", "dau");
         map1.put("name", "新增日活");
-        map1.put("value", "dau");
+        map1.put("value", dau.toString());
         result.add(map1);
 
         Map<String, String> map2 = new HashMap<>();
@@ -46,6 +53,11 @@ public class PublisherController {
         return JSON.toJSONString(result);
     }
 
+    /**
+     * 日活分时统计
+     * @param date
+     * @return
+     */
     @GetMapping("/realtime-hour")
     public String getRealtimeHour(String id, String date) {
         if ("dau".equals(id)) {
