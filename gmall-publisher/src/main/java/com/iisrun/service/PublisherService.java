@@ -13,6 +13,7 @@ public interface PublisherService {
 
     /**
      * 获取总的日活
+     *
      * @param date
      * @return
      */
@@ -20,8 +21,25 @@ public interface PublisherService {
 
     /**
      * 日活分时统计
+     *
      * @param date
      * @return
      */
-    Map<String,Long> getHourDau(String date);
+    Map<String, Long> getHourDau(String date);
+
+    /**
+     * 当日销售总额
+     *
+     * @param date
+     * @return
+     */
+    Double getTotalAmount(String date);
+
+    /**
+     * 获取小时的销售额
+     *
+     * @param date
+     * @return
+     */
+    Map<String, Double> getHourAmount(String date);
 }

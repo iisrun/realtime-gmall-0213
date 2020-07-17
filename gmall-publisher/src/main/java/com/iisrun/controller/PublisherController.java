@@ -34,6 +34,7 @@ public class PublisherController {
     @GetMapping("/realtime-total")
     public String realtimeTotal(@RequestParam("date") String date) {
         Long dau = service.getDau(date);
+//        Long dau = 222L;
 
         // Json字符串先用java的数据结构表示，然后用json序列号工具直接转成json字符串
         List<Map<String, String>> result = new ArrayList<>();
@@ -49,6 +50,12 @@ public class PublisherController {
         map2.put("name", "新增设备");
         map2.put("value", "223");
         result.add(map2);
+
+        Map<String, String> map3 = new HashMap<>();
+        map3.put("id", "new_mid");
+        map3.put("name", "新增销售额");
+        map3.put("value", service.getTotalAmount(date).toString());
+        result.add(map3);
 
         return JSON.toJSONString(result);
     }
@@ -69,8 +76,16 @@ public class PublisherController {
             result.put("yesterday", yesterday);
 
             return JSON.toJSONString(result);
+        } else if ("order_amount".equals(id)) {
+            Map<String, Double> today = service.getHourAmount(date);
+            Map<String, Double> yesterday = service.getHourAmount(getYesterDay(date));
+            HashMap<String, Map<String, Double>> result = new HashMap<>();
+            result.put("today", today);
+            result.put("yesterday", yesterday);
+            return JSON.toJSONString(result);
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**

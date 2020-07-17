@@ -1,9 +1,11 @@
 package com.iisrun.service;
 
 import com.iisrun.mapper.DauMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.iisrun.mapper.OrderMapper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +20,16 @@ import java.util.Map;
 @Service
 public class PublisherServiceImpl implements PublisherService{
 
-    @Autowired
+    @Resource
     private DauMapper dau;
+
+    @Resource
+    private OrderMapper order;
 
     @Override
     public Long getDau(String date) {
-        return dau.getDau(date);
+        Long dau = this.dau.getDau(date);
+        return dau == null ? 0 : dau;
     }
 
     @Override
@@ -36,5 +42,24 @@ public class PublisherServiceImpl implements PublisherService{
             result.put(key,value);
         }
         return result;
+    }
+
+    @Override
+    public Double getTotalAmount(String date) {
+        Double totalAmout = order.getTotalAmount(date);
+//        Double totalAmout = 222D;
+        return totalAmout == null ? 0 : totalAmout;
+    }
+
+    @Override
+    public Map<String, Double> getHourAmount(String date) {
+        List<Map<String, Object>> hourAmountList = order.getHourAmount(date);
+        Map<String, Object> resultMap = new HashMap<>();
+        for (Map<String, Object> map : hourAmountList) {
+            String key = (String) map.get("CREATE_HOUR");
+            Double value = ((BigDecimal) map.get("SUM")).doubleValue();
+            resultMap.put(key, value);
+        }
+        return null;
     }
 }

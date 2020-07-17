@@ -29,8 +29,7 @@ public class LoggerController {
     public String doLog(@RequestParam("log")String log){
         // 1. 给日志添加一个时间戳
         log = addTS(log);
-        // 2. 数据落盘(为离线数据做准备)
-        // 日志落盘
+        // 2. 日志落盘(为离线数据做准备)
         saveToDisk(log);
         // 3. 把数据写入到kafka，需要写入到topic
         sendToKafka(log);
