@@ -4,7 +4,7 @@ import java.util
 import com.alibaba.fastjson.JSON
 import com.iisrun.constants.GmallConstant
 import com.iisrun.realtime.bean.{AlertInfo, EventLog}
-import com.iisrun.realtime.utils.MyKafkaUtils
+import com.iisrun.realtime.utils.{EsUtils, MyKafkaUtils}
 import org.apache.spark.streaming.{Minutes, Seconds, StreamingContext}
 import org.apache.spark.streaming.dstream.DStream
 
@@ -64,9 +64,19 @@ object AlertApp extends BaseApp {
     }
 
     // 3. 把数据写入到es中
-
     alertInfoStream.print(1000)
-
+    alertInfoStream.filter(_._1)
+      .map(_._2)
+      .foreachRDD(rdd => {
+//        rdd.foreachPartition((it: Iterator[AlertInfo]) => {
+//          // es 每个document都有id，id如果使用分钟表示：一分钟之内的数据就只会有一条数据
+//          // 为了防止设备2把设备1的记录覆盖，这里拼接上设备id
+//          EsUtils.insertBulk("gmall_coupon_alert", it.map(info => (info.mid + ":" + info.ts / 1000 / 60, info)))
+//        })
+        // 方式二：使用隐式类
+        import EsUtils._
+        rdd.saveToES("gmall_coupon_alert")
+      })
   }
 }
 /*
