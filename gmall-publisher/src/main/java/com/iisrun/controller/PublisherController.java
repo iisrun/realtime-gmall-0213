@@ -52,8 +52,8 @@ public class PublisherController {
         result.add(map2);
 
         Map<String, String> map3 = new HashMap<>();
-        map3.put("id", "new_mid");
-        map3.put("name", "新增销售额");
+        map3.put("id", "order_amount");
+        map3.put("name", "新增交易额");
         map3.put("value", service.getTotalAmount(date).toString());
         result.add(map3);
 
