@@ -13,19 +13,20 @@ object RedisUtils {
 
   val host = ConfigUtils.getProperty("redis.host")
   val port = ConfigUtils.getProperty("redis.port").toInt
-  private val jedisPoolConfig = new JedisPoolConfig()
-  jedisPoolConfig.setMaxTotal(100) //最大连接数
-  jedisPoolConfig.setMaxIdle(20) //最大空闲
-  jedisPoolConfig.setMinIdle(20) //最小空闲
-  jedisPoolConfig.setBlockWhenExhausted(true) //忙碌时是否等待
-  jedisPoolConfig.setMaxWaitMillis(10000) //忙碌时等待时长 毫秒
-  jedisPoolConfig.setTestOnCreate(true)   //创建的时候测试
-  jedisPoolConfig.setTestOnBorrow(true)   //每次获得连接的进行测试
-  jedisPoolConfig.setTestOnReturn(true)
-  private val jedisPool: JedisPool = new JedisPool(jedisPoolConfig, host, port)
+  private val conf = new JedisPoolConfig()
+  conf.setMaxTotal(100)             //最大连接数
+  conf.setMaxIdle(20)               //最大空闲
+  conf.setMinIdle(20)               //最小空闲
+  conf.setBlockWhenExhausted(true)  //忙碌时是否等待
+  conf.setMaxWaitMillis(10000)      //忙碌时等待时长 毫秒
+  conf.setTestOnCreate(true)        //创建的时候测试
+  conf.setTestOnBorrow(true)        //每次获得连接的进行测试
+  conf.setTestOnReturn(true)
+
+//  private val jedisPool: JedisPool = new JedisPool(conf, host, port)
 
   // 直接得到一个 Redis 的连接
-  def getJedisClient: Jedis = {
+  def getClient: Jedis = {
 //    jedisPool.getResource
     // 使用上面的方式会报错，优化为下面的方式
     // redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool
@@ -33,9 +34,9 @@ object RedisUtils {
   }
 
   def main(args: Array[String]): Unit = {
-    val client :Jedis = getJedisClient
+    val client :Jedis = getClient
     client.set("k1","redis")
-
+    client.close()
   }
 
 }

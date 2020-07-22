@@ -87,7 +87,7 @@ object CanalClient {
       for (column <- columnList) {
         // id:100 total_amount:1000.2
         val key: String = column.getName
-        val value: String = column.getName
+        val value: String = column.getValue
         obj.put(key, value)
       }
       println("sendToKafka:" + obj.toString)

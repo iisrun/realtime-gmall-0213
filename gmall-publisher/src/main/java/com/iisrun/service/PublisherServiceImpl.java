@@ -2,7 +2,7 @@ package com.iisrun.service;
 
 import com.iisrun.mapper.DauMapper;
 import com.iisrun.mapper.OrderMapper;
-import com.iisrun.utils.EsUtils;
+import com.iisrun.utils.EsUtil;
 import io.searchbox.client.JestClient;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -78,9 +78,9 @@ public class PublisherServiceImpl implements PublisherService{
         "age":Map("M"->100,"F"->100),
          "detail":List(Map(一行记录，Map(...)))
          */
-        String dsl = EsUtils.getDSL(date, keyword, aggField, aggCount, startPage, sizePerPage);
+        String dsl = EsUtil.getDSl(date, keyword, aggField, aggCount, startPage, sizePerPage);
         // 获取ES客户端
-        JestClient esClient = EsUtils.getESClient();
+        JestClient esClient = EsUtil.getESClient();
         // 创建查询对象
         Search search = new Search.Builder(dsl)
                 .addIndex("gmall_sale_detail")

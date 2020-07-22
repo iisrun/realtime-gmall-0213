@@ -3,7 +3,7 @@ package com.iisrun.realtime.utils
 import com.iisrun.realtime.bean.AlertInfo
 import io.searchbox.client.{JestClient, JestClientFactory}
 import io.searchbox.client.config.HttpClientConfig
-import io.searchbox.core.{Bulk, Index}
+import io.searchbox.core.{Bulk, BulkResult, Index}
 import org.apache.spark.rdd.RDD
 
 
@@ -28,13 +28,13 @@ object EsUtils {
 
   def main(args: Array[String]): Unit = {
     // 单条插入测试
-    insertSingle("user",User("yy",100))
-
-    // 批量有id插入测试
-    val it1 = List((1, User("cc", 1)), (2, User("bb", 2)), (3, User("dd", 4))).toIterator
-    // 批量无id插入测试
+//    insertSingle("user",User("yy",100))
+//
+//    // 批量有id插入测试
+//    val it1 = List((1, User("cc", 1)), (2, User("bb", 2)), (3, User("dd", 4))).toIterator
+//    // 批量无id插入测试
     val it2 = List(User("cc22", 1), User("dd2", 2)).toIterator
-    insertBulk("user",it2)
+    insertBulk("gmall_sale_detail",it2)
   }
 
   /**

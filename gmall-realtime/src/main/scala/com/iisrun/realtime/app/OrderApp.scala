@@ -16,7 +16,7 @@ import org.apache.phoenix.spark._
  */
 object OrderApp extends BaseApp {
   override def run(ssc: StreamingContext): Unit = {
-    val orerInfoDStream = MyKafkaUtils.getKafkaStream(ssc, GmallConstant.ORDER_TOPIC)
+    val orerInfoDStream = MyKafkaUtils.getKafkaStream(ssc, GmallConstant.ORDER_INFO_TOPIC)
       .map(json => JSON.parseObject(json, classOf[OrderInfo]))
 
     orerInfoDStream.foreachRDD(rdd => {

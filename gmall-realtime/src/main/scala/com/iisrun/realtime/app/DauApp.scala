@@ -39,7 +39,7 @@ object DauApp {
     // 为什么不用filter()过滤数据？如果用filter过滤的话每条日志都会访问redis，会导致连接数过多。
     val filteredStartupLogStream: DStream[StartupLog] = startupLogStream.transform(rdd => {
       // 3.1 先去读redis的数据
-      val client: Jedis = RedisUtils.getJedisClient
+      val client: Jedis = RedisUtils.getClient
       val mids: util.Set[String] = client.smembers(GmallConstant.STARTUP_TOPIC + ":" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()))
       // 归还连接池
       client.close()
@@ -62,7 +62,7 @@ object DauApp {
       // rdd的数据写入到redis，只需要写mid就行了
       // 一个分区一个分区的写
       rdd.foreachPartition(logs => {
-        val client: Jedis = RedisUtils.getJedisClient
+        val client: Jedis = RedisUtils.getClient
         logs.foreach(log => {
           client.sadd(GmallConstant.STARTUP_TOPIC + ":" + log.logDate, log.mid)
         })
