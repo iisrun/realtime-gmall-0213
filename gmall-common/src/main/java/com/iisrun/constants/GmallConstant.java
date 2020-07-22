@@ -21,6 +21,10 @@ public class GmallConstant {
     /**
      * 订单主题
      */
-    public static final String ORDER_TOPIC = "order_topic";
+    public static final String ORDER_INFO_TOPIC = "order_info_topic";
+
+    public static final String ORDER_DETAIL_TOPIC = "order_detail_topic";
+
+
 
 }
