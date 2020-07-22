@@ -26,7 +26,10 @@ object RedisUtils {
 
   // 直接得到一个 Redis 的连接
   def getJedisClient: Jedis = {
-    jedisPool.getResource
+//    jedisPool.getResource
+    // 使用上面的方式会报错，优化为下面的方式
+    // redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool
+    new Jedis("hadoop61",6379)
   }
 
   def main(args: Array[String]): Unit = {
