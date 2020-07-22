@@ -28,8 +28,8 @@ case class OrderInfo(id: String,
                      parent_order_id: String,
                      out_trade_no: String,
                      trade_body: String,
-                     var create_date: String,
-                     var create_hour: String) {
+                     var create_date: String = null,
+                     var create_hour: String = null) {
   // "2020-07-17 21:12:42"
   create_date = create_time.substring(0, 10)
   create_hour = create_time.substring(11, 13)
@@ -37,6 +37,6 @@ case class OrderInfo(id: String,
   // 对敏感信息，做脱敏处理
   consignee = consignee.substring(0, 1) + "***"
   // 135 6644 2352 => 135 **** 2352
-  consignee_tel = consignee_tel.replaceAll("(\\d{3}\\d{4}\\d{4})", "$1****$2")
+  consignee_tel = consignee_tel.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2")
 }
 
